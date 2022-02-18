@@ -2,11 +2,11 @@ import React, {Component, useState, useEffect} from 'react';
 import { BrowserRouter, Link, Routes, Route, Switch, useNavigate, Navigate, NavLink, } from 'react-router-dom'
 import './App.css';
 import Pages from './routes';
-import { Button} from 'react-bootstrap';
 import { getToken, removeUserSession } from "./Utils/Common";
+import {Button} from 'react-bootstrap';
+import "bootstrap/dist/css/bootstrap.min.css"
 
-
-const [Cart, Checkout, Products, Login, Dashboard ] = Pages
+const [Cart, Checkout, Products, Login] = Pages
 
 function PrivateRoute({ children }) {
   const auth = getToken();
@@ -15,7 +15,7 @@ function PrivateRoute({ children }) {
 
 function PublicRoute({ children }) {
   const auth = getToken();
-  return !auth ? children : <Navigate to="/dashboard" />;
+  return !auth ? children : <Navigate to="/products" />;
 }
 
 function App() {
@@ -48,17 +48,16 @@ function App() {
         }}
       >
         {!isLogged ? (
-          <NavLink to="/login" className={({ isActive }) => "is-active" + (isActive ? " activated" : "not-active")} > Login</NavLink> 
+          <NavLink to="/login" > 
+              <Button>Login</Button>
+          </NavLink> 
         ) : (
-          <Button onClick={logout} color="inherit">Logout</Button>
+          <Button onClick={logout} >Logout</Button>
         )}
 
         <NavLink to="/products" className={({ isActive }) => "is-active" + (isActive ? " activated" : "not-active")}> Products</NavLink> 
-        <NavLink to="/dashboard" className={({ isActive }) => "is-active" + (isActive ? " activated" : "not-active")}>Dashboard</NavLink >
         <NavLink  to="/cart"  className={({ isActive }) => "is-active" + (isActive ? " activated" : "not-active")}> Cart</NavLink >      
         <NavLink  to="/checkout"  className={({ isActive }) => "is-active" + (isActive ? " activated" : "not-active")}>Checkout</NavLink >
-
-
 
 
       </nav>
@@ -72,12 +71,11 @@ function App() {
             </PublicRoute>
           }
         />
-        <Route path="products" element={<Products />}/>
         <Route
-          path="dashboard"
+          path="products"
           element={
             <PrivateRoute>
-              <Dashboard />
+              <Products />
             </PrivateRoute>
           }
         />
