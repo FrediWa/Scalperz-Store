@@ -15,14 +15,14 @@ const Login = (props) => {
     const handleLogin = () => {
         setError(null);
         setLoading(true);
-
         axios.post("https://cna22-user-service.herokuapp.com/users/login", {
                 email: email,
                 password: password 
     }).then(response => { 
         setLoading(false);
         setUserSession(response.data.accessToken);
-        navigate("/dashboard")
+        navigate('/dashboard'); 
+        //<Navigate to="/dashboard" />;
         //console.log("response >>>>" , response);
     }).catch(error => {
         setLoading(false);
