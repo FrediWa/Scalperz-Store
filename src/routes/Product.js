@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import { generateStarRating } from '../Utils/Common';
 import CartButton from './Components/CartButton';
 
-
 const Product = ({name, price, desc, rating, imageUrl, id}) => {
 
     const description = desc.substr(0, 200)

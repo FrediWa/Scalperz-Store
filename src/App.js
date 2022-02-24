@@ -1,5 +1,5 @@
 import React, {Component, useState, useEffect} from 'react';
-import { BrowserRouter, Link, Routes, Route, Switch, useNavigate, Navigate, NavLink, } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate, NavLink } from 'react-router-dom'
 import './App.css';
 import Pages from './routes';
 import { getToken, removeUserSession } from "./Utils/Common";
@@ -10,7 +10,7 @@ const [Cart, Checkout, Products, Login, SingleProduct] = Pages
 
 function PrivateRoute({ children }) {
   const auth = getToken();
-  return auth ? children : <Navigate to="/login" />;
+  return auth ? children : <Navigate to="/" />;
 }
 
 function PublicRoute({ children }) {
@@ -41,30 +41,37 @@ function App() {
 
   return (
     <BrowserRouter>
-      <nav
-        style={{
-          borderBottom: "solid 1px",
-          paddingBottom: "1rem"
-        }}
-      >
+      <nav>
         {!isLogged ? (
-          <NavLink to="/login" > 
-              <Button>Login</Button>
-          </NavLink> 
+          <NavLink to="/"> </NavLink> 
         ) : (
-          <Button onClick={logout} >Logout</Button>
+        <Button onClick={logout} >Logout</Button>
         )}
-
-        <NavLink to="/products" className={({ isActive }) => "is-active" + (isActive ? " activated" : "not-active")}> Products</NavLink> 
-        <NavLink  to="/cart"  className={({ isActive }) => "is-active" + (isActive ? " activated" : "not-active")}> Cart</NavLink >      
-        <NavLink  to="/checkout"  className={({ isActive }) => "is-active" + (isActive ? " activated" : "not-active")}>Checkout</NavLink >
-
+        
+        {isLogged ? (
+            <NavLink to="/products" className={({ isActive }) => "is-active" + (isActive ? " activated" : "not-active")}> Products</NavLink>
+          ) : (
+            <NavLink to="/"> </NavLink> 
+          )
+        }
+        {isLogged ? (
+            <NavLink  to="/checkout"  className={({ isActive }) => "is-active" + (isActive ? " activated" : "not-active")}>Checkout</NavLink >  
+          ) : (
+            <NavLink to="/"> </NavLink> 
+          )
+        }
+        {isLogged ? (
+            <NavLink  to="/cart"  className={({ isActive }) => "is-active" + (isActive ? " activated" : "not-active")}>Cart</NavLink >  
+          ) : (
+            <NavLink to="/"> </NavLink> 
+          )
+        }
 
       </nav>
 
       <Routes>
         <Route
-          path="login"
+          path="/"
           element={
             <PublicRoute>
               <Login />
