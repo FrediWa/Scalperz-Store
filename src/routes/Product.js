@@ -1,7 +1,7 @@
 import './styles/Products.css'
 import { Link } from 'react-router-dom'
 import { generateStarRating } from '../Utils/Common';
-import CartButton from './Components/CartButton';
+import CartButton from './components/CartButton';
 
 const Product = ({name, price, desc, rating, imageUrl, id}) => {
 

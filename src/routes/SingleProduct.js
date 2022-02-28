@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useParams } from 'react-router'
 import { generateStarRating } from '../Utils/Common'
 import './styles/SingleProduct.css'
-import CartButton from './Components/CartButton'
+import CartButton from './components/CartButton'
 
 const axios = require('axios')
 
