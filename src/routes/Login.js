@@ -13,7 +13,8 @@ const Login = (props) => {
     const [cookies, setCookie] = useCookies(["user-session"]);
     const navigate = useNavigate();
 
-    const handleLogin = () => {
+    const handleLogin = (e) => {
+        e.preventDefault()      
         setError(null);
         setLoading(true);
         axios.post("https://cna22-user-service.herokuapp.com/users/login", {
@@ -25,6 +26,7 @@ const Login = (props) => {
         navigate('/products'); 
         window.location.reload();
     }).catch(error => {
+        console.log(error, "wasdfwad")
         setLoading(false);
         if(error.response.status === 401 || error.response.status === 400){
             setError("Username or Password is wrong");
