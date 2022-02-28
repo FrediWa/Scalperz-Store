@@ -26,7 +26,6 @@ const Login = (props) => {
         navigate('/products'); 
         window.location.reload();
     }).catch(error => {
-        console.log(error, "wasdfwad")
         setLoading(false);
         if(error.response.status === 401 || error.response.status === 400){
             setError("Username or Password is wrong");
