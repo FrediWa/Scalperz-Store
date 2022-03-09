@@ -4,6 +4,7 @@ import React from "react"
 import './styles/Checkout.css'
 import { useState } from 'react';
 import { useCookies } from "react-cookie";
+import { Next } from 'react-bootstrap/esm/PageItem';
 
 
 const axios = require('axios');
@@ -24,12 +25,12 @@ const Checkout = () => {
   const [useremail, setUseremail] = useState('');
 
   //Cart saker
-  const [cartProductId, setProductId]=useState('');
-  const [cartProductName, setCartProductName]=useState();
-  const [cartProductAmount, setCartProductAmount]=useState();
+  const [cartProductId, setProductId]=useState([]);
+  const [cartProductName, setCartProductName]=useState([]);
+  const [cartProductAmount, setCartProductAmount]=useState([]);
 
   //Produkt saker
-  const [productPrice, setPrice] = useState('');
+  const [productPrice, setPrice] = useState();
  
 
   //Få användar info
@@ -53,29 +54,45 @@ const Checkout = () => {
   }
   callUser()
 console.log(userid)
-//TODO: Få flera saker. 
+//TODO: Få flera saker.
+
   const cartInfoo=()=>{
+    if(cartProductAmount.length<1){
     axios.get(`https://cna-cart-api.herokuapp.com/cart/${userid}`,{//använd 2 om din id ej hittas i cart att se att koden funkar${userid}
       headers: {
         'Authorization': `Bearer ${access_token}` 
       }
       })
       .then((result) => { 
+        let proId=[]
+        let prodA=[]
 
-        setProductId(result.data[0].pId)
-        console.log(result.data[0].pId)
-        //setCartProductName(result.data[0].productName)
-        setCartProductAmount(result.data[0].productAmount)
-        console.log(result.data[0].productAmount)
+        for(var i=0;i<result.data.length;i++)
+        {
+          prodA.push(result.data[i].productAmount)
+          proId.push(result.data[i].pId)
+        }
+        
+        setCartProductAmount(prodA)
+        setProductId(proId)
+        
+        //setProductId(result.data[0].pId)
+       // console.log(result.data[0].pId)
+       
+        //setCartProductAmount(result.data[0].productAmount)
+        //console.log(result.data[0].productAmount)
 
       })
       .catch((error) => {
       console.error(error)
       })
     }
-    
-  cartInfoo()
-console.log(cartProductId)
+  }
+
+
+  if(cartProductAmount.length<1){cartInfoo()}
+
+console.log(cartProductAmount)
 
 //Hantera token
   const tokenToJson= (token) =>{
@@ -88,7 +105,7 @@ console.log(cartProductId)
   const findAdress=(mail,data)=>{
       for(var i=0;i<data.length;i++){
         if(mail===data[i].email){
-          console.log(data[i].email)
+          //console.log(data[i])
           setInputEmail(data[i].email)
         setInputAd1(data[i].adress+' '+data[i].zip)
         }
@@ -97,30 +114,51 @@ console.log(cartProductId)
 
 
 //Cookie för om man behöver testa något eller sakerna vid test skedje ej finns
- const handleCookie=()=> {
-    setCookie("item_id", "394739127971", {
-      path: "/"
-    });
-    setCookie("productAmount", "3", {
-      path: "/"
-    });
-  }
+
 
   //Räkna ut priset
-  const getPrice=()=>{
-    axios.get(`https://cna22-products-service.herokuapp.com/product/${cartProductId}`,{
-    headers: {
-      'Authorization': `Bearer ${access_token}` 
+  const getPrice= ()=>{
+    if(cartProductName.length<1){
+      let newPris=0
+      const newName=[]
+      //const newPris = []
+      let proAmo=cartProductAmount
+     
+      
+      for(var j=0; j<cartProductId.length;j++){
+      
+        axios.get(`https://cna22-products-service.herokuapp.com/product/${cartProductId[j]}`,{
+        headers: {
+          'Authorization': `Bearer ${access_token}` 
+        }
+        })
+        .then((res)=>{
+          
+           console.log([j])
+           console.log(Object.values(proAmo))
+            newPris=(newPris)+(res.data.price*((cartProductAmount[0]))) //Vill ej funka med [j] för mig iallafall
+            console.log(typeof (cartProductAmount[0]));
+            console.log(typeof newPris);
+            console.log(typeof res.data.price);
+            console.log(newPris)
+            newName.push(res.data.name)
+           setCartProductName(oldArray => [...oldArray, res.data.name]);
+           setPrice(newPris)  
+               //return newName   
+        })
+      
+      }  
+
+      //setCartProductName(newName);
+      console.log(newPris)
+      
     }
-    })
-      .then((res)=>{
-        setPrice(res.data.price*cartProductAmount)//
-        setCartProductName(res.data.name)
-      })
-    }
-    getPrice()
     
-    console.log(cartProductId)
+  }
+  
+  if(cartProductName.length<1){ getPrice()}
+  console.log(cartProductName)
+  console.log(productPrice)
 
   //Hanterar submit
   const handleSubmit=(event)=>{
@@ -129,7 +167,7 @@ console.log(cartProductId)
       
                   customerNumber: userid,
                   email:inputEmail,
-                  itemId: cartProductId,
+                  itemId: cartProductId[0],
                   address: inputAd1,
                   price: productPrice
     },{headers: {
@@ -153,12 +191,12 @@ console.log(cartProductId)
 
   return (
       <div >
-          <div onLoad={handleCookie()}>
+          <div>
 
               <div id={'purchaseDiv'}>
      
                 
-                <p><b>Product:</b> {cartProductName}</p>
+                <p><b>Product(s):</b> {cartProductName}</p>
                 <form name={'confirmationForm'} onSubmit={handleSubmit}>
                     <h3>Email</h3>   
                     <input value={inputEmail} readOnly  />
@@ -168,7 +206,7 @@ console.log(cartProductId)
                     <br></br>
                     <input className='confirmationButton' type={'submit'} value={'Submit'}></input>
                  </form>
-                <p><b>Price:</b> {productPrice}</p>
+                <p><b>Price:</b> {productPrice} EUR</p>
                 <br></br>
              
               </div>
@@ -178,7 +216,7 @@ console.log(cartProductId)
                 <p><b>We has sent the invoice to:</b> {inputEmail} </p>
                 <p><b>Delivering to:</b> {inputAd1}</p>
                 <p><b>Products:</b> {cartProductName} </p>
-                <p><b>Price:</b> {productPrice}</p>
+                <p><b>Price:</b> {productPrice} EUR</p>
               </div>  
           </div>
       </div> 
