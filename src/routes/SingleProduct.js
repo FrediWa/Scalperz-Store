@@ -1,3 +1,7 @@
+/*
+This is the route for a single product as opposed to a product component on the products route
+*/
+
 import { useState } from 'react'
 import { useParams } from 'react-router'
 import { generateStarRating } from '../Utils/Common'
@@ -12,22 +16,23 @@ const SingleProduct = () => {
     const [product, setProduct] = useState({name: '', price: 0, rasting: 0, description: '', chip: '', memory:'', packageDimensions:{width:0, height:0, depth:0}, packageWeight:0, imageURLs: [0]})
     const [stock, setStock] = useState(0)
 
+    // Get data if state is empty
     if(product.name  === ''){
         axios.get("https://cna22-products-service.herokuapp.com/product/"+id)
         .then((res) => {
             setProduct(res.data)
         })
     }
-
+    // Check if product is in stock
     axios.get(("https://cna-inventory-service.herokuapp.com/products/" + id), {
         headers: {
             Authorization: `Bearer ${token}`
         }
     }).then(data => {setStock(data.data.antal)})
 
+    // Product is in stock if there is more than 0 of said product
     const inStock = (stock > 0)
 
-    console.log(product)
     return(
         <div className="single-product">
             <div className="single-product--header">

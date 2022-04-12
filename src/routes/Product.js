@@ -1,3 +1,7 @@
+/*
+This is the component on the products route as opposed to the route for a single product 
+*/
+
 import './styles/Products.css'
 import { Link } from 'react-router-dom'
 import { generateStarRating } from '../Utils/Common';
@@ -10,14 +14,19 @@ const Product = ({name, price, desc, rating, imageUrl, id}) => {
     const [stock, setStock] = useState(0)
     const token = sessionStorage.getItem("accessToken");
 
+    // Check for stock
     axios.get(("https://cna-inventory-service.herokuapp.com/products/" + id), {
         headers: {
             Authorization: `Bearer ${token}`
         }
     }).then(data => {setStock(data.data.antal)})
     
-    const inStock = (stock > 0) //hardcoded data until inventory service works again, this will be replaced by a request and a state
+    // Product is in stock if there is more than 0 of said product
+    const inStock = (stock > 0) 
+    
+    // Cut the description to 200 chars so that the site isn't cluttered with text
     const description = desc.substr(0, 200)
+    
     return(
     <div className="product">
         <div className="product--image_wrapper">

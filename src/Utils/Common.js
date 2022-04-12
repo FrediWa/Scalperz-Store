@@ -1,10 +1,18 @@
 const axios = require('axios');
 
 export const generateStarRating = (n) => {
+    /*
+    The rating of a product is a decimal number n ϵ [0-1]. A 10 star rating isn't very user friendly but was easy 
+    to implement since there was no unicode char for half a star. A 5 star rating would be possible with the current 
+    code, but some information would be lost
+    */
+
+    // Convert decimal to integer
     n = Math.round(n*10)
     let starRating = ""
     for(let i=1; i<=10; i++){
-        starRating += (i <= n ? "★" : "☆")
+      // Write out 10 stars. The i-th star is filled if less than or equal to n, which results in n filled stars and empty remaining stars. 
+      starRating += (i <= n ? "★" : "☆")
     }
     return starRating
 }
