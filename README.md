@@ -18,5 +18,12 @@ The team consists of:
 
 Majority of communication has been done through Discord and subtasks have been managed through the issues and the project board of this repo.
 
+## API Dependency
+The frontend is dependent on a couple service APIs. It is directly dependent on:
+- Users service
+- Product service
+- Inventory service
+- Cart service
+- Order service
 
-
+The application itself is not dependent on the shipping and invoicing services. When a user makes an order the order service contacts the necessary services to fully process the order. However the user can technically from start to finish make an order on the store without the aforementioned services. 
