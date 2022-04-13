@@ -27,7 +27,12 @@ function App() {
   const access_token=getCookieToken()
   
   const getUserId = () =>{
-    setUserid(tokenToJson(access_token).sub)
+    try{
+      setUserid(tokenToJson(access_token).sub)
+
+    }catch(e){
+      
+    }
   }
 
   if(userid.length === 0){
@@ -44,6 +49,7 @@ function App() {
 
   function PrivateRoute({ children }) {
     const auth = getCookieToken();
+    console.log(auth)
     return auth ? children : <Navigate to="/" />;
   }
   
