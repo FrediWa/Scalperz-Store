@@ -1,3 +1,25 @@
+# Course project
+### Skills demonstrated/used
+Project management and React
+### Description
+I want to showcase this project to demonstrate my ability to not only work with React but to show how I work with React in a team. The following description contains notes to give some part of the text context, which can be found below the description.
+
+My role for the project was to act as a team (1) lead, but I also did some development. As team lead I proposed we use React (2) and then I dictated the development process as well as tested and merged code. As the most seasoned developer in my team, I helped the others with struggles they had in development. 
+
+As team lead I naturally served as the primary communication channel between us and the other teams (1) and conveyed information to my team. I also took it upon myself to fix bugs and do the final deploy by the course end.
+
+I also created the product listing page. Not alot to say about it and whoever is reading this will probably find it more helpful to look through the commit/code by themselves if interested.
+
+ ### Notes
+ 1. This project was just one of many microservices developed developed under one course. The course was structured as one big agile project and each team (comprised of students in the same class) created either one frontend or one API. I chose frontend because I wanted more experience with the client side. As the most seasoned developer, I quickly started pitching ideas and was soon appointed team lead.
+ 2. Each team was free to choose any technology to work with. Naturally the lecturer advised us to choose something not too cryptic as then he couldn't be much of help with eventual problems. I chose React simply because of it's popularity because then everyone in my team would be familiar with it.
+ 
+(This repository is a fork of the original which was created as a joint effort for a course)
+
+
+
+(Below is the readme of the original project)
+--------------------------------------------------------------------------------------
 # The frontend of Scalperz's store
 ### A joint effort by Fredrik Wasström, Dilan Zibari, Sigrid Hallik and Christian Sandqvist
 
